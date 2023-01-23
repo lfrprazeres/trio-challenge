@@ -1,0 +1,70 @@
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 200;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-ExtraLight.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 300;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-Light.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 400;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 500;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-Book.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 600;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-SemiBold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 700;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont"; 
+  font-weight: 800;
+  src: local("Mont"),
+    url("../assets/fonts/Mont-Heavy.otf") format("opentype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+body {
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+body,
+input,
+button {
+  font: 16px 'Mont', sans-serif;
+}
+button {
+  cursor: pointer;
+}
