@@ -75,7 +75,7 @@ export const InfoIcon = styled(InfoOutlined)(({ theme }) => ({
 export const OverviewContainer = styled(Card)<CardProps>(({ theme }) => ({
   borderColor: theme.palette.grey[500],
   padding: 34,
-  maxHeight: 295,
+  maxHeight: 770
 }))
 
 export const BookingButton = styled(Button)<ButtonProps>(({ theme }) => ({

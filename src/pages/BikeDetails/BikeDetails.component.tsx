@@ -20,6 +20,7 @@ import {
   OverviewContainer,
   PriceRow,
 } from './BikeDetails.styles'
+import DatePickerRange from 'components/DateRangePicker'
 
 interface BikeDetailsProps {
   bike?: Bike
@@ -112,7 +113,13 @@ const BikeDetails = ({ bike }: BikeDetailsProps) => {
         </DetailsContainer>
 
         <OverviewContainer variant='outlined' data-testid='bike-overview-container'>
-          <Typography variant='h2' fontSize={16} marginBottom={1.25}>
+          <Typography variant='h1' fontSize={24} fontWeight={800} mb={1} pl={0}>
+            Select date and time
+          </Typography>
+          <Box display='flex' justifyContent='center'>
+            <DatePickerRange />
+          </Box>
+          <Typography variant='h2' fontSize={16} mb={1.25} mt={2.75}>
             Booking Overview
           </Typography>
 
