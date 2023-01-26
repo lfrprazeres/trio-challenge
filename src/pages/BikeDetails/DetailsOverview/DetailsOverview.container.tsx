@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar'
+import Fade from '@mui/material/Fade'
 
 import Amount from 'models/Amount'
 import amountServices from 'services/amount'
@@ -7,10 +8,12 @@ import { DateRange } from 'components/DateRangePicker'
 
 import useBikeContext from '../BikeDetails.context'
 import DetailsOverview from './DetailsOverview.component'
-import { Alert } from '@mui/material'
+import { Alert, CircularProgress } from '@mui/material'
 import { AxiosError } from 'axios'
 import bikeServices from 'services/bike'
+import { Container } from './DetailsOverview.styles'
 
+const RentCompleted = lazy(() => import('./RentCompleted'))
 
 const DetailsOverviewContainer = () => {
   const { id } = useBikeContext()
@@ -93,20 +96,27 @@ const DetailsOverviewContainer = () => {
           {snackbarData.message}
         </Alert>
       </Snackbar>
-      {!isRentSucceed
-        ? (
-          <DetailsOverview
-            isLoading={isLoading}
-            isError={isError}
-            rentRange={rentRange}
-            setRentRange={setRentRange}
-            isRenting={isRenting}
-            handleRent={rentBike}
-            {...amountAndFees}
-          />
-        )
-        : <div></div> // TODO: Rent component
-      }
+      <Container variant='outlined' data-testid='bike-overview-container' isRentSucceed={isRentSucceed}>
+        {!isRentSucceed
+          ? (
+            <DetailsOverview
+              isLoading={isLoading}
+              isError={isError}
+              rentRange={rentRange}
+              setRentRange={setRentRange}
+              isRenting={isRenting}
+              handleRent={rentBike}
+              {...amountAndFees}
+            />
+          )
+          : (
+
+            <Suspense fallback={<CircularProgress />}>
+              <RentCompleted />
+            </Suspense>
+          )
+        }
+      </Container>
     </>
   )
 }

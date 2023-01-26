@@ -3,7 +3,7 @@ import { Box, CircularProgress, Divider, Typography } from '@mui/material'
 
 import Amount from 'models/Amount'
 
-import { BookingButton, Container } from './DetailsOverview.styles'
+import { BookingButton } from './DetailsOverview.styles'
 import DatePickerRange, { DateRange } from 'components/DateRangePicker'
 import { InfoIcon, PriceRow } from '../BikeDetails.styles'
 import useBikeContext from '../BikeDetails.context'
@@ -32,7 +32,7 @@ const DetailsOverview = ({
   const { rateByDay, servicesFee, total } = useBikeContext()
 
   return (
-    <Container variant='outlined' data-testid='bike-overview-container'>
+    <>
       <Typography variant='h1' fontSize={24} fontWeight={800} mb={1} pl={0}>
         Select date and time
       </Typography>
@@ -90,7 +90,7 @@ const DetailsOverview = ({
       >
         {isRenting ? <CircularProgress size={24} /> : 'Add to booking'}
       </BookingButton>
-    </Container>
+    </>
   )
 }
 

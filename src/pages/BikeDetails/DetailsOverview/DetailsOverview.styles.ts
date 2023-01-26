@@ -1,10 +1,12 @@
 import { Button, ButtonProps, Card, CardProps } from '@mui/material'
 import { styled } from '@mui/system'
 
-export const Container = styled(Card)<CardProps>(({ theme }) => ({
+export const Container = styled(Card, {
+  shouldForwardProp: (prop) => prop !== 'isRentSucceed',
+})<CardProps & { isRentSucceed: boolean }>(({ theme, isRentSucceed }) => ({
   borderColor: theme.palette.grey[500],
   padding: 34,
-  maxHeight: 770
+  maxHeight: isRentSucceed ? 450 : 770
 }))
 
 export const BookingButton = styled(Button)<ButtonProps>(({ theme }) => ({
