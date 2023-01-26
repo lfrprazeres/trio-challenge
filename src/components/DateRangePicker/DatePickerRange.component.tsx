@@ -1,7 +1,9 @@
-import { DateRange } from '@mui/x-date-pickers-pro'
+import { DateRange, StaticDatePickerSlotsComponentsProps } from '@mui/x-date-pickers-pro'
 
 import { Container, PickerDay, arrowStyles } from './DatePickerRange.styles'
 import DateRangeValue from './DatePickerRange.types'
+
+type TestId = keyof StaticDatePickerSlotsComponentsProps<DateRangeValue>
 
 interface DatePickerRangeProps {
   value: DateRangeValue,
@@ -22,12 +24,14 @@ const DatePickerRange = ({ value, onChange }: DatePickerRangeProps) => {
       dayOfWeekFormatter={(day) => day}
       calendars={1}
       disablePast
+      data-testid='date-range'
       slots={{ day: PickerDay }}
       slotProps={{
+        day: { ['data-testid'as TestId ]: 'date-range-day' },
         actionBar: { sx: { display: 'none' } },
         toolbar: { hidden: true },
-        previousIconButton: { sx: arrowStyles },
-        nextIconButton: { sx: arrowStyles },
+        previousIconButton: { sx: arrowStyles, ['data-testid' as TestId]: 'date-range-previous-icon-button' },
+        nextIconButton: { sx: arrowStyles, ['data-testid' as TestId]: 'date-range-next-icon-button' },
       }}
     />
   )

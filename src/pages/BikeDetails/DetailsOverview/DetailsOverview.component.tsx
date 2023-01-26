@@ -78,7 +78,7 @@ const DetailsOverview = ({
           {!isError && !isLoading && (totalAmount || total)}€
         </Typography>
       </PriceRow>
-      {isError && <FormHelperText error={isError}> Please select a valid date range </FormHelperText>}
+      {isError && <FormHelperText data-testid='bike-overview-error-text' error={isError}> Please select a valid date range </FormHelperText>}
 
       <BookingButton
         disabled={!rentRange[1] || isError || isLoading}

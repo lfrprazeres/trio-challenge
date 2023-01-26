@@ -28,3 +28,8 @@ export const mockedBikesArray = [
   { ...mockedBike, id: 3 },
   { ...mockedBike, id: 4 },
 ]
+
+export const mockedBikeRentReturn = {
+  bikeId: 1,
+  userId: 7
+}

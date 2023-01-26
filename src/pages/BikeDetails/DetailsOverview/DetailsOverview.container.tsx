@@ -110,7 +110,6 @@ const DetailsOverviewContainer = () => {
             />
           )
           : (
-
             <Suspense fallback={<CircularProgress />}>
               <RentCompleted />
             </Suspense>

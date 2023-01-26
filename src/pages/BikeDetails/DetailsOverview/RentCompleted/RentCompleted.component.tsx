@@ -7,7 +7,7 @@ const RentCompleted = () => {
   const { name, type, imageUrls } = useBikeContext()
   return (
     <Fade in timeout={1000}>
-      <Container>
+      <Container data-testid='rent-completed-container'>
         <Typography variant='h1' fontSize={24} mb={3}>
           Thank you!
         </Typography>
