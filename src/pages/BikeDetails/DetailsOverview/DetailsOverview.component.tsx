@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Box, Divider, Typography } from '@mui/material'
+import { Box, CircularProgress, Divider, Typography } from '@mui/material'
 
 import Amount from 'models/Amount'
 
@@ -7,14 +7,16 @@ import { BookingButton, Container } from './DetailsOverview.styles'
 import DatePickerRange, { DateRange } from 'components/DateRangePicker'
 import { InfoIcon, PriceRow } from '../BikeDetails.styles'
 import useBikeContext from '../BikeDetails.context'
+import FormHelperText from '@mui/material/FormHelperText'
 
 interface DetailsOverviewProps extends Amount {
   rentRange: DateRange,
   setRentRange: Dispatch<SetStateAction<DateRange>>,
-  rentError: boolean
+  isError: boolean
+  isLoading: boolean
 }
 
-const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount, rentError }: DetailsOverviewProps) => {
+const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount, isError, isLoading }: DetailsOverviewProps) => {
   const { rateByDay, servicesFee, total } = useBikeContext()
 
   return (
@@ -37,7 +39,10 @@ const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount
           <InfoIcon fontSize='small' />
         </Box>
 
-        <Typography>{rentAmount || rateByDay} €</Typography>
+        <Typography>
+          {isLoading && <CircularProgress size={12} />}
+          {!isError && !isLoading && (rentAmount || rateByDay)} €
+        </Typography>
       </PriceRow>
 
       <PriceRow marginTop={1.5} data-testid='bike-overview-single-price'>
@@ -46,7 +51,10 @@ const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount
           <InfoIcon fontSize='small' />
         </Box>
 
-        <Typography>{fee || servicesFee} €</Typography>
+        <Typography>
+          {isLoading && <CircularProgress size={12} />}
+          {!isError && !isLoading && (fee || servicesFee)} €
+        </Typography>
       </PriceRow>
 
       <PriceRow marginTop={1.75} data-testid='bike-overview-total'>
@@ -54,12 +62,14 @@ const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount
           Total
         </Typography>
         <Typography variant='h2' fontSize={24} letterSpacing={1}>
-          {totalAmount || total} €
+          {isLoading && <CircularProgress size={12} />}
+          {!isError && !isLoading && (totalAmount || total)}€
         </Typography>
       </PriceRow>
+      {isError && <FormHelperText error={isError}> Please select a valid date range </FormHelperText>}
 
       <BookingButton
-        disabled={rentError}
+        disabled={isError || isLoading}
         fullWidth
         disableElevation
         variant='contained'

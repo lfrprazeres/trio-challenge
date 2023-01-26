@@ -15,7 +15,8 @@ const DetailsOverviewContainer = () => {
   const [rentRange, setRentRange] = useState<DateRange>([undefined, undefined])
   const [snackbarData, setSnackbarData] = useState({ message: '', open: false })
   const [amountAndFees, setAmountAndFees] = useState<Amount>({ rentAmount: 0, fee: 0, totalAmount: 0 })
-  const [fetchError, setFetchError] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleCloseSnackbar = () => setSnackbarData({ message: '', open: false })
 
@@ -25,6 +26,7 @@ const DetailsOverviewContainer = () => {
     const [dateFrom, dateTo] = rentRange
     if (id && dateTo) {
       try {
+        setIsLoading(true)
         const amountAndFees = await amountServices.getAmount({
           bikeId: id,
           dateFrom,
@@ -37,15 +39,17 @@ const DetailsOverviewContainer = () => {
           totalAmount: Math.floor(amountAndFees.totalAmount)
         })
       } catch (error) {
-        setFetchError(true)
+        setIsError(true)
         const { response } = error as AxiosError<AmountError>
         if (response?.data.errorType === 'InvalidDatesError') handleOpenSnackbar('Bike not available in the given date range')
-      } 
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
   useEffect(() => {
-    setFetchError(false)
+    setIsError(false)
     getAmountAndFees()
   }, [rentRange, id])
 
@@ -62,7 +66,8 @@ const DetailsOverviewContainer = () => {
         </Alert>
       </Snackbar>
       <DetailsOverview
-        rentError={fetchError}
+        isLoading={isLoading}
+        isError={isError}
         rentRange={rentRange}
         setRentRange={setRentRange}
         {...amountAndFees}
