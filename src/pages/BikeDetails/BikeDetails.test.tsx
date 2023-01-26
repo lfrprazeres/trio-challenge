@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react'
-import { render } from 'test-utils';
+import { render } from 'test-utils'
 import { BrowserRouter } from 'react-router-dom'
 import { mockedBike } from 'mocks/Bike'
 import BikeDetails from './BikeDetails.component'

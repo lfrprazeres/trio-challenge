@@ -11,9 +11,10 @@ import useBikeContext from '../BikeDetails.context'
 interface DetailsOverviewProps extends Amount {
   rentRange: DateRange,
   setRentRange: Dispatch<SetStateAction<DateRange>>,
+  rentError: boolean
 }
 
-const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount }: DetailsOverviewProps) => {
+const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount, rentError }: DetailsOverviewProps) => {
   const { rateByDay, servicesFee, total } = useBikeContext()
 
   return (
@@ -58,6 +59,7 @@ const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount
       </PriceRow>
 
       <BookingButton
+        disabled={rentError}
         fullWidth
         disableElevation
         variant='contained'
