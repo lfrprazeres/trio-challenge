@@ -13,10 +13,22 @@ interface DetailsOverviewProps extends Amount {
   rentRange: DateRange,
   setRentRange: Dispatch<SetStateAction<DateRange>>,
   isError: boolean
-  isLoading: boolean
+  isLoading: boolean,
+  isRenting: boolean,
+  handleRent: () => Promise<void>
 }
 
-const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount, isError, isLoading }: DetailsOverviewProps) => {
+const DetailsOverview = ({
+  rentRange,
+  setRentRange,
+  rentAmount,
+  fee,
+  totalAmount,
+  isError,
+  isLoading,
+  isRenting,
+  handleRent
+}: DetailsOverviewProps) => {
   const { rateByDay, servicesFee, total } = useBikeContext()
 
   return (
@@ -69,13 +81,14 @@ const DetailsOverview = ({ rentRange, setRentRange, rentAmount, fee, totalAmount
       {isError && <FormHelperText error={isError}> Please select a valid date range </FormHelperText>}
 
       <BookingButton
-        disabled={isError || isLoading}
+        disabled={!rentRange[1] || isError || isLoading}
         fullWidth
         disableElevation
         variant='contained'
         data-testid='bike-booking-button'
+        onClick={handleRent}
       >
-        Add to booking
+        {isRenting ? <CircularProgress size={24} /> : 'Add to booking'}
       </BookingButton>
     </Container>
   )

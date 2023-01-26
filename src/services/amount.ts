@@ -16,7 +16,7 @@ interface Params extends HandleAmountParams {
 
 const amountServices = {
   getAmount: async ({ bikeId, dateFrom, dateTo }: HandleAmountParams): Promise<Amount> => {
-    let params: Params = { bikeId, userId: Number(USER_ID || 0) }
+    let params: Params = { bikeId, userId: Number(USER_ID) }
     
     if (!!dateFrom && !!dateTo) {
       params = { ...params, dateFrom: formatDate(dateFrom), dateTo: formatDate(dateTo) }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 
-import Amount, { AmountError } from 'models/Amount'
+import Amount from 'models/Amount'
 import amountServices from 'services/amount'
 import { DateRange } from 'components/DateRangePicker'
 
@@ -9,6 +9,8 @@ import useBikeContext from '../BikeDetails.context'
 import DetailsOverview from './DetailsOverview.component'
 import { Alert } from '@mui/material'
 import { AxiosError } from 'axios'
+import bikeServices from 'services/bike'
+
 
 const DetailsOverviewContainer = () => {
   const { id } = useBikeContext()
@@ -18,9 +20,17 @@ const DetailsOverviewContainer = () => {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const [isRenting, setIsRenting] = useState(false)
+  const [isRentSucceed, setIsRentSucceed] = useState(false)
+
   const handleCloseSnackbar = () => setSnackbarData({ message: '', open: false })
 
-  const handleOpenSnackbar = (message: string) => setSnackbarData({ message, open: true })
+  const handleOpenSnackbar = (message?: string) => {
+    setSnackbarData({
+      message: message || 'Something wrong happened',
+      open: true
+    })
+  }
 
   const getAmountAndFees = async () => {
     const [dateFrom, dateTo] = rentRange
@@ -40,11 +50,29 @@ const DetailsOverviewContainer = () => {
         })
       } catch (error) {
         setIsError(true)
-        const { response } = error as AxiosError<AmountError>
-        if (response?.data.errorType === 'InvalidDatesError') handleOpenSnackbar('Bike not available in the given date range')
+        const { response } = error as AxiosError<{ message: string }>
+        handleOpenSnackbar(response?.data.message)
       } finally {
         setIsLoading(false)
       }
+    }
+  }
+
+  const rentBike = async () => {
+    try {
+      const [dateFrom, dateTo] = rentRange
+      setIsRenting(true)
+      await bikeServices.rent({
+        bikeId: id,
+        dateFrom,
+        dateTo
+      })
+      setIsRentSucceed(true)
+    } catch (error) {
+      const { response } = error as AxiosError<{ message: string }>
+      handleOpenSnackbar(response?.data.message)
+    } finally {
+      setIsRenting(false)
     }
   }
 
@@ -65,13 +93,20 @@ const DetailsOverviewContainer = () => {
           {snackbarData.message}
         </Alert>
       </Snackbar>
-      <DetailsOverview
-        isLoading={isLoading}
-        isError={isError}
-        rentRange={rentRange}
-        setRentRange={setRentRange}
-        {...amountAndFees}
-      />
+      {!isRentSucceed
+        ? (
+          <DetailsOverview
+            isLoading={isLoading}
+            isError={isError}
+            rentRange={rentRange}
+            setRentRange={setRentRange}
+            isRenting={isRenting}
+            handleRent={rentBike}
+            {...amountAndFees}
+          />
+        )
+        : <div></div> // TODO: Rent component
+      }
     </>
   )
 }

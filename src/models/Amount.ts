@@ -3,8 +3,3 @@ export default interface Amount {
   fee: number,
   totalAmount: number
 }
-
-export interface AmountError {
-  errorType: 'InvalidDatesError',
-  message: string
-}
