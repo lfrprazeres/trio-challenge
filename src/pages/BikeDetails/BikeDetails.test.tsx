@@ -1,15 +1,18 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { render } from 'test-utils';
 import { BrowserRouter } from 'react-router-dom'
 import { mockedBike } from 'mocks/Bike'
-import { SERVICE_FEE_PERCENTAGE } from './BikeDetails.contants'
-import { getServicesFee } from './BikeDetails.utils'
 import BikeDetails from './BikeDetails.component'
+import { BikeProvider } from './BikeDetails.context'
+
 
 describe('BikeDetails page', () => {
   beforeEach(() => {
     render(
       <BrowserRouter>
-        <BikeDetails bike={mockedBike} />
+        <BikeProvider externalData={mockedBike}>
+          <BikeDetails />
+        </BikeProvider>
       </BrowserRouter>,
     )
   })
@@ -54,15 +57,5 @@ describe('BikeDetails page', () => {
 
     const bookingButtonElement = screen.getByTestId('bike-booking-button')
     expect(bookingButtonElement).toBeInTheDocument()
-  })
-})
-
-describe('BikeDetails utils', () => {
-  it('should gets the services fee properly', () => {
-    const amount = 100
-    const expectedAmount = amount * SERVICE_FEE_PERCENTAGE
-
-    const result = getServicesFee(amount)
-    expect(result).toEqual(expectedAmount)
   })
 })
