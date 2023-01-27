@@ -21,6 +21,7 @@ const theme = createTheme({
       main: '#FFD775',
     },
     grey: {
+      100: '#FFFFFF80',
       500: '#EDEDED',
     },
     common: {

@@ -9,6 +9,7 @@ This project was created for the Trio Challenge, where candidates must create a 
 - [ReactJS](https://reactjs.org/docs/getting-started.html)
 - [TypeScript](https://www.typescriptlang.org/docs/)
 - [Material UI](https://mui.com/pt/material-ui/getting-started/overview/)
+- [Material UI x Date Pickers pro](https://next.mui.com/x/react-date-pickers/getting-started/)
 
 ## How to run it
 
@@ -57,10 +58,15 @@ It launches the test runner in the interactive watch mode.
   - [Header/](./src/components/Header)
 - [mocks/](./src/mocks)
   - [Bike.ts](./src/mocks/Bike.ts)
+  - [Amount.ts](./src/mocks/Amount.ts)
 - [models/](./src/models)
   - [Bike.ts](./src/models/Bike.ts)
+  - [Amount.ts](./src/models/Amount.ts)
 - [pages/](./src/pages)
   - [BikeDetails/](./src/pages/BikeDetails)
+    - [DetailsContainer](./src/pages/BikeDetails/DetailsContainer)
+    - [DetailsOverview](./src/pages/BikeDetails/DetailsOverview)
+      - [RentCompleted](./src/pages/BikeDetails/DetailsOverview/RentCompleted)
   - [Home/](./src/pages/Home)
   - [Login/](./src/pages/Login)
 - [routes/](./src/routes)

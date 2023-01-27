@@ -1,15 +1,27 @@
-import { render, screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { render } from 'test-utils'
 import { BrowserRouter } from 'react-router-dom'
-import { mockedBike } from 'mocks/Bike'
-import { SERVICE_FEE_PERCENTAGE } from './BikeDetails.contants'
-import { getServicesFee } from './BikeDetails.utils'
+import { mockedBike, mockedBikeRentReturn } from 'mocks/Bike'
 import BikeDetails from './BikeDetails.component'
+import { BikeProvider } from './BikeDetails.context'
+import userEvent from '@testing-library/user-event'
+import { mockedAmountFailureReturn, mockedAmountReturn } from 'mocks/Amount'
+import amountServices from 'services/amount'
+import bikeServices from 'services/bike'
+
+jest.mock('services/amount')
+jest.mock('services/bike')
+
+const mockedDate = new Date(2000, 9, 1, 7)
+global.Date.now = jest.fn(() => mockedDate.getTime())
 
 describe('BikeDetails page', () => {
   beforeEach(() => {
     render(
       <BrowserRouter>
-        <BikeDetails bike={mockedBike} />
+        <BikeProvider externalData={mockedBike}>
+          <BikeDetails />
+        </BikeProvider>
       </BrowserRouter>,
     )
   })
@@ -55,14 +67,73 @@ describe('BikeDetails page', () => {
     const bookingButtonElement = screen.getByTestId('bike-booking-button')
     expect(bookingButtonElement).toBeInTheDocument()
   })
-})
 
-describe('BikeDetails utils', () => {
-  it('should gets the services fee properly', () => {
-    const amount = 100
-    const expectedAmount = amount * SERVICE_FEE_PERCENTAGE
+  it('should have the previous month\'s rent disabled and the next rent month enabled', () => {
+    const previousMonthButton = screen.getByTestId('date-range-previous-icon-button')
+    const nextMonthButton = screen.getByTestId('date-range-next-icon-button')
+    expect(previousMonthButton).toBeDisabled()
+    expect(nextMonthButton).not.toBeDisabled()
+  })
 
-    const result = getServicesFee(amount)
-    expect(result).toEqual(expectedAmount)
+  it('should have the previous day from today disabled', () => {
+    const days = screen.getAllByTestId('date-range-day')
+    const todayIndex = days.findIndex(element => element.classList.contains('MuiPickersDay-today'))
+    expect(days[todayIndex - 1]).toBeDisabled()
+  })
+
+  it('should enable "add to booking" button only after the correct range date pick', () => {
+    (amountServices.getAmount as jest.Mock).mockResolvedValueOnce(mockedAmountReturn)
+
+    const days = screen.getAllByTestId('date-range-day')
+    const todayIndex = days.findIndex(element => element.classList.contains('MuiPickersDay-today'))
+    const bookingButton = screen.getByTestId('bike-booking-button')
+
+    expect(bookingButton).toBeDisabled()
+
+    userEvent.click(days[todayIndex]);
+    userEvent.click(days[todayIndex + 1]);
+
+    waitFor(() => {
+      expect(bookingButton).not.toBeDisabled()
+    });
+  })
+
+  it('should keep the "add to booking" button disabled and show a helper text on the get amount failure', () => {
+    (amountServices.getAmount as jest.Mock).mockRejectedValueOnce(mockedAmountFailureReturn)
+
+    const days = screen.getAllByTestId('date-range-day')
+    const todayIndex = days.findIndex(element => element.classList.contains('MuiPickersDay-today'))
+    const bookingButton = screen.getByTestId('bike-booking-button')
+
+    userEvent.click(days[todayIndex]);
+    userEvent.click(days[todayIndex + 1]);
+
+    waitFor(() => {
+      const errorTextElement = screen.getByTestId('bike-overview-error-text')
+      expect(errorTextElement.textContent).toBe(mockedAmountFailureReturn.message)
+      expect(bookingButton).toBeDisabled()
+    });
+  })
+
+  it('should complete the rent successfully', async () => {
+    (amountServices.getAmount as jest.Mock).mockResolvedValueOnce(mockedAmountReturn)
+
+    const days = screen.getAllByTestId('date-range-day')
+    const todayIndex = days.findIndex(element => element.classList.contains('MuiPickersDay-today'))
+    const bookingButton = screen.getByTestId('bike-booking-button')
+
+    userEvent.click(days[todayIndex]);
+    userEvent.click(days[todayIndex + 1]);
+
+    (bikeServices.rent as jest.Mock).mockResolvedValueOnce(mockedBikeRentReturn)
+
+    await waitFor(() => expect(bookingButton).not.toBeDisabled())
+
+    userEvent.click(bookingButton)
+
+    waitFor(() => {
+      const rentCompletedContainer = screen.getByTestId('rent-completed-container')
+      expect(rentCompletedContainer).toBeInTheDocument()
+    })
   })
 })

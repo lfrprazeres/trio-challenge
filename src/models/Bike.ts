@@ -12,3 +12,9 @@ export default interface Bike {
   cardImage?: string
   city?: string
 }
+
+export interface BikeRentReturn {
+  rentAmount: number,
+  fee: number,
+  totalAmount: number
+}
