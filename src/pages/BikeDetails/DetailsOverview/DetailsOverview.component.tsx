@@ -36,8 +36,11 @@ const DetailsOverview = ({
       <Typography variant='h1' fontSize={24} fontWeight={800} mb={1} pl={0}>
         Select date and time
       </Typography>
-      <Box display='flex' justifyContent='center'>
+      <Box display='flex' justifyContent='center' flexDirection='column'>
         <DatePickerRange value={rentRange} onChange={setRentRange} />
+        {isError && <FormHelperText data-testid='bike-overview-error-text' error={isError}>
+          Please select another date range
+        </FormHelperText>}
       </Box>
       <Typography variant='h2' fontSize={16} mb={1.25} mt={2.75}>
         Booking Overview
@@ -78,7 +81,6 @@ const DetailsOverview = ({
           {!isError && !isLoading && (totalAmount || total)}€
         </Typography>
       </PriceRow>
-      {isError && <FormHelperText data-testid='bike-overview-error-text' error={isError}> Please select a valid date range </FormHelperText>}
 
       <BookingButton
         disabled={!rentRange[1] || isError || isLoading}
