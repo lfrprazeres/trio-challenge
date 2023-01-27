@@ -55,7 +55,7 @@ const DetailsOverview = ({
         </Box>
 
         <Typography>
-          {isLoading && <CircularProgress size={12} />}
+          {isLoading && <CircularProgress sx={{ marginRight: 1 }} size={12} />}
           {!isError && !isLoading && (rentAmount || rateByDay)} €
         </Typography>
       </PriceRow>
@@ -67,7 +67,7 @@ const DetailsOverview = ({
         </Box>
 
         <Typography>
-          {isLoading && <CircularProgress size={12} />}
+          {isLoading && <CircularProgress sx={{ marginRight: 1 }} size={12} />}
           {!isError && !isLoading && (fee || servicesFee)} €
         </Typography>
       </PriceRow>
@@ -77,7 +77,7 @@ const DetailsOverview = ({
           Total
         </Typography>
         <Typography variant='h2' fontSize={24} letterSpacing={1}>
-          {isLoading && <CircularProgress size={12} />}
+          {isLoading && <CircularProgress sx={{ marginRight: 1 }} size={12} />}
           {!isError && !isLoading && (totalAmount || total)}€
         </Typography>
       </PriceRow>

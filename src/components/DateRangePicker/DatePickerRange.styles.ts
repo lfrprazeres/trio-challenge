@@ -9,9 +9,19 @@ export const Container = styled(StaticDateRangePicker)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   borderRadius: 40,
   filter: 'drop-shadow(0px 10px 70px rgba(0, 0, 0, 0.2))',
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 'auto',
+    '& div': {
+      minWidth: 'auto'
+    }
+  },
   [calendarContainer]: {
     padding: '20px 5px',
+    width: '100%',
     '& .MuiDayCalendar-weekDayLabel': { color: theme.palette.grey[100] },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
   },
   '& .MuiPickersCalendarHeader-label': {
     color: theme.palette.grey[100],

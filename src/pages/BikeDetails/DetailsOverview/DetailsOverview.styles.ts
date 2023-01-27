@@ -6,6 +6,9 @@ export const Container = styled(Card, {
 })<CardProps & { isRentSucceed: boolean }>(({ theme, isRentSucceed }) => ({
   borderColor: theme.palette.grey[500],
   padding: 34,
+  [theme.breakpoints.down('sm')]: {
+    padding: '35px 15px',
+  },
   maxHeight: isRentSucceed ? 450 : 770
 }))
 
