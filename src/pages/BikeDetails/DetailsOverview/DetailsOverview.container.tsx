@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar'
-import Fade from '@mui/material/Fade'
 
 import Amount from 'models/Amount'
 import amountServices from 'services/amount'
@@ -8,7 +7,7 @@ import { DateRange } from 'components/DateRangePicker'
 
 import useBikeContext from '../BikeDetails.context'
 import DetailsOverview from './DetailsOverview.component'
-import { Alert, CircularProgress } from '@mui/material'
+import { Alert, Box, CircularProgress } from '@mui/material'
 import { AxiosError } from 'axios'
 import bikeServices from 'services/bike'
 import { Container } from './DetailsOverview.styles'
@@ -110,7 +109,7 @@ const DetailsOverviewContainer = () => {
             />
           )
           : (
-            <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<Box display='flex' height='100%' alignItems='center' justifyContent='center'> <CircularProgress /> </Box>}>
               <RentCompleted />
             </Suspense>
           )
